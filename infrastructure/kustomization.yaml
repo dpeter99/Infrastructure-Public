@@ -4,3 +4,4 @@ resources:
   - cilium/ks-config.yaml
   - longhorn/longhorn-system-namespace.yaml
   - longhorn/longhorn-release.yaml
+  - nginx-proxy/nginx-helmrelease.yaml
