@@ -1,8 +1,8 @@
 apiVersion: kustomize.toolkit.fluxcd.io/v1
 kind: Kustomization
 metadata:
-  name: cilium-system-config
-  namespace: cilium-system
+  name: cilium-config
+  namespace: kube-system
 spec:
 #  dependsOn:
 #    - name: cluster-apps-cilium
