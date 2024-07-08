@@ -1,0 +1,45 @@
+@startuml
+
+skinparam componentstyle uml2
+left to right direction
+skinparam nodesep 50
+skinparam Ranksep 50
+
+skinparam component {
+    Padding 100
+    BorderColor Blue
+    BoxPadding 200
+}
+
+cloud Internet
+
+component Router
+Internet -- Router
+
+
+component Cluster{
+
+    component Cilium {
+
+    }
+    port LoadBalancer
+    note left of LoadBalancer : Virtual IP
+    LoadBalancer == Cilium
+
+
+    component NGNIX {
+        port in as NGNIX_in
+        portout out as NGNIX_out
+    }
+    Cilium --> NGNIX_in 
+
+    component Website {
+        port http
+    }
+    NGNIX_out --> http
+
+}
+
+Router --> LoadBalancer : "Port Forward"
+
+@enduml

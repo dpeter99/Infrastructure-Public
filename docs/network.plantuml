@@ -1,0 +1,33 @@
+@startuml
+!include <office/Devices/device_lcd_monitor>
+
+nwdiag {
+
+    internet [ shape = cloud];
+    internet -- router;
+
+    router [address = "Public IP"];
+    network LAN {
+        address = "10.1.x.x/24";
+
+        router [address = "10.1.0.1"];
+        PC [address = "10.1.0.2", description = "<$device_lcd_monitor>\n PC"];
+        group cluster {
+            color = "#FFAAAA"
+            Node1 [address = "10.1.2.1", shape = "node"];
+            Node2 [address = "10.1.2.2", shape = "node"];
+
+        }
+
+        LoadBalancer [address = "10.1.100.X", shape= "collections"]
+        
+    }
+
+    network Cluster {
+        LoadBalancer
+
+        Pods [address = "????", shape = "collections"];
+    }
+
+}
+@enduml
