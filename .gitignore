@@ -1,0 +1,9 @@
+/talos_os/secrets.yaml
+/talos_os/rendered/
+/.idea/
+
+talos_os/talsecret.yaml
+
+talos_os/_temp/
+
+talos_os/clusterconfig/

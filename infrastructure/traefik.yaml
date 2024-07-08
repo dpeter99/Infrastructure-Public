@@ -28,4 +28,8 @@ spec:
       sourceRef:
         kind: HelmRepository
         name: traefik-repo
+      values:
+        ingressRoute:
+          dashboard:
+            enabled: true
   interval: 1m0s

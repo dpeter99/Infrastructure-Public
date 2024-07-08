@@ -1,0 +1,27 @@
+---
+clusterName: aperture_cluster
+endpoint: https://10.1.2.1:6443
+allowSchedulingOnControlPlanes: true
+nodes:
+  - hostname: APER-NODE-01
+    controlPlane: true
+    ipAddress: 10.1.2.1
+    installDisk: /dev/nvme0n1
+    machineDisks:
+      - device: /dev/sdb
+        partitions:
+          - mountpoint: /var/mnt/ext-store
+patches:
+  - "@patches/cni.yaml"
+  - "@patches/dhcp.yaml"
+#  - "@patches/kubelet-certificates.yaml"
+#  - "@patches/longhorn-volume.yaml"
+controlPlane:
+  schematic:
+    customization:
+      extraKernelArgs:
+        - net.ifnames=0
+      systemExtensions:
+        officialExtensions:
+          - siderolabs/iscsi-tools
+          - siderolabs/util-linux-tools

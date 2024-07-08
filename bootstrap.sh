@@ -1,14 +1,21 @@
-#!/bin/bash
+#!/usr/bin/env sh
+parent_path=$( cd "$(dirname "${BASH_SOURCE[0]}")" ; pwd -P )
+cd "$parent_path"
 
-if [ -z "${GITHUB_TOKEN}" ]; then
-  echo "Please set the GITHUB_TOKEN environment variable to a GitHub personal access token with repo permissions."
-  exit 1
-fi
+source ./common.sh
 
-flux bootstrap github \
-  --token-auth \
-  --owner=dpeter99 \
-  --repository=Aperture-Infra \
-  --branch=cluster-2 \
-  --path=clusters/aper_cluster \
-  --personal
+echo "Bootstrapping Aperture Cluster..."
+
+
+echo "  [] Installing Cilium..."
+source ./cilium_install.sh
+
+wait 100
+
+until [ $(talosctl get nodestatus --talosconfig talos_os/clusterconfig/talosconfig --output json | jq '.spec.nodeReady') = true ] ; do
+echo "Waiting for nodes to be ready..."
+sleep 10
+done
+
+echo "  [] Installing Flux..."
+source ./bootstrap_flux.sh
