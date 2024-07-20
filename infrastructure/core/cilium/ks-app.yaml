@@ -4,6 +4,7 @@ metadata:
   name: cilium-system
   namespace: flux-system
 spec:
+  targetNamespace: kube-system
   path: ./infrastructure/core/cilium/app
   prune: false # never should be deleted
   sourceRef:
