@@ -3,7 +3,5 @@ kind: Kustomization
 resources:
   - cilium/ks-app.yaml
   - cilium/ks-config.yaml
-  - longhorn/longhorn-system-namespace.yaml
-  - longhorn/longhorn-release.yaml
-  - nginx-proxy/nginx-system-namespace.yaml
-  - nginx-proxy/nginx-release.yaml
+  - longhorn/ks-app.yaml
+  - nginx-proxy/ks-app.yaml

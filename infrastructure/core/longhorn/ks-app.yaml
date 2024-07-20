@@ -4,10 +4,10 @@ metadata:
   name: cilium-config
   namespace: flux-system
 spec:
-  dependsOn:
-    - name: cilium-system
-  path: ./infrastructure/core/cilium/config
-  prune: false # never should be deleted
+#  dependsOn:
+#    - name: cluster-apps-cilium
+  path: ./infrastructure/core/longhorn/app
+  prune: true
   sourceRef:
     kind: GitRepository
     name: flux-system

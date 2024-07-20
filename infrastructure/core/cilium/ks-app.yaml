@@ -1,11 +1,9 @@
 apiVersion: kustomize.toolkit.fluxcd.io/v1
 kind: Kustomization
 metadata:
-  name: cilium-config
+  name: cilium-system
   namespace: flux-system
 spec:
-#  dependsOn:
-#    - name: cluster-apps-cilium
   path: ./infrastructure/core/cilium/app
   prune: false # never should be deleted
   sourceRef:
