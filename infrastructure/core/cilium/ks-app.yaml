@@ -6,7 +6,7 @@ metadata:
 spec:
 #  dependsOn:
 #    - name: cluster-apps-cilium
-  path: ./infrastructure/cilium/app
+  path: ./infrastructure/core/cilium/app
   prune: false # never should be deleted
   sourceRef:
     kind: GitRepository
