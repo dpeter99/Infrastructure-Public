@@ -3,3 +3,4 @@ kind: Kustomization
 resources:
   - flux-system/helm-chart-repos/cilium-charts.yaml
   - flux-system/helm-chart-repos/jetstack.yaml
+  - flux-system/helm-chart-repos/jameswynn.yaml
