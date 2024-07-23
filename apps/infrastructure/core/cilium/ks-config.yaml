@@ -7,7 +7,7 @@ spec:
   dependsOn:
     - name: cilium-system
       namespace: flux-system
-  path: ./infrastructure/core/cilium/config
+  path: ./apps/infrastructure/core/cilium/config
   prune: false # never should be deleted
   sourceRef:
     kind: GitRepository

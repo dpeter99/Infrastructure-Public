@@ -4,9 +4,7 @@ metadata:
   name: longhorn-app
   namespace: flux-system
 spec:
-#  dependsOn:
-#    - name: cluster-apps-cilium
-  path: ./infrastructure/core/longhorn/app
+  path: ./apps/infrastructure/core/longhorn/app
   prune: true
   sourceRef:
     kind: GitRepository

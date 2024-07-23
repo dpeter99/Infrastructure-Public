@@ -1,0 +1,16 @@
+{{- if ne .Values.persistence.config.existing true }}
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: {{ include "jellyfin.fullname" . }}-config
+  labels:
+    {{ include "jellyfin.labels" . | nindent 4}}
+spec:
+  accessModes:
+    - "ReadWriteOnce"
+  resources:
+    requests:
+      storage: 5Gi
+  storageClassName: {{ .Values.persistence.storageClass | quote }}
+
+{{- end}}

@@ -1,0 +1,28 @@
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: {{ include "mealie.fullname" . }}-ingress
+  annotations:
+    {{ include "mealie.labels" . | nindent 4 }}
+    {{ if .Values.service.cert_manager.enable }}
+    cert-manager.io/issuer: "{{ .Values.service.cert_manager.issuer }}"
+    {{ end }}
+spec:
+  ingressClassName: {{ .Values.service.ingressClass | quote }}
+  {{ if .Values.service.cert_manager.enable }}
+  tls:
+    - hosts:
+        - {{ .Values.service.url | quote }}
+      secretName: {{ include "mealie.fullname" . }}-ingress-tls
+  {{ end }}
+  rules:
+    - host: {{ .Values.service.url | quote }}
+      http:
+        paths:
+          - path: /
+            pathType: Prefix
+            backend:
+              service:
+                name: {{ include "mealie.fullname" . }}-service
+                port:
+                  number: 80

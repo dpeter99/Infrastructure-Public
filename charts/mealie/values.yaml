@@ -1,0 +1,16 @@
+
+nameOverride: ""
+partOf: ""
+
+persistence:
+  config:
+    storageClass: longhorn
+    existing: false
+
+
+service:
+  ingressClass: traefik
+  url: "mealie.local"
+  cert_manager:
+    enable: true
+    issuer: "default"
