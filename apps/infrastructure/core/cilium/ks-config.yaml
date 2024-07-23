@@ -5,7 +5,7 @@ metadata:
   namespace: flux-system
 spec:
   dependsOn:
-    - name: cilium-system
+    - name: infra-core-cilium-system
       namespace: flux-system
   path: ./apps/infrastructure/core/cilium/config
   prune: false # never should be deleted
