@@ -59,7 +59,7 @@ ingress:
       gethomepage.dev/group: "Dynamic"
       gethomepage.dev/icon: "homepage.png"
     hosts:
-      - host: homepage.local
+      - host: homepage.intranet
         paths:
           - path: /
             pathType: Prefix
