@@ -1,4 +1,7 @@
 ---
+operator:
+  replicas: 1
+
 ipam:
   mode: "kubernetes"
 
