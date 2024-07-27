@@ -18,8 +18,8 @@ l2announcements:
   enabled: true
 
 k8sClientRateLimit:
-  qps: {QPS}
-  burst: {BURST}
+  qps: 30
+  burst: 50
 
 k8sServiceHost: localhost
 k8sServicePort: 7445
