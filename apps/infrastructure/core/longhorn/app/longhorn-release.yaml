@@ -24,3 +24,13 @@ spec:
         name: longhorn-repo
       version: 1.6.0
   interval: 1m0s
+  values:
+    ingress:
+      enabled: true
+      host: longhorn.intranet
+      annotations:
+        gethomepage.dev/enabled: "true"
+        gethomepage.dev/name: "Longhorn"
+        gethomepage.dev/description: "Longhorn UI"
+        gethomepage.dev/group: "Infrastructure"
+        gethomepage.dev/icon: "homepage.png"

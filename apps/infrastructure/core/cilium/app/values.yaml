@@ -58,7 +58,7 @@ hubble:
           gethomepage.dev/enabled: "true"
           gethomepage.dev/name: "Hubble"
           gethomepage.dev/description: "Cilium Hubble UI"
-          gethomepage.dev/group: "Dynamic"
+          gethomepage.dev/group: "Infrastructure"
           gethomepage.dev/icon: "homepage.png"
         hosts:
           - hubble.intranet
