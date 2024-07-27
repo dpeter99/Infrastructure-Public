@@ -5,16 +5,17 @@ operator:
 ipam:
   mode: "kubernetes"
 
-kubeProxyReplacement: disabled
+# -- Configure the kube-proxy replacement in Cilium BPF datapath
+# Valid options are "true" or "false".
+# ref: https://docs.cilium.io/en/stable/network/kubernetes/kubeproxy-free/
+kubeProxyReplacement: "true"
 
-enable-l2-announcements: true
-kube-proxy-replacement: true
+# -- Configure L2 announcements
+l2announcements:
+  enabled: true
 
 k8sServiceHost: localhost
 k8sServicePort: 7445
-
-k8s-client-qps: {QPS}
-k8s-client-burst: {BURST}
 
 cgroup:
   automount:
