@@ -5,5 +5,5 @@ metadata:
   name: main-pool
   namespace: kube-system
 spec:
-  cidrs:
+  blocks:
     - cidr: 10.1.100.0/24
