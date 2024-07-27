@@ -10,6 +10,9 @@ ipam:
 # ref: https://docs.cilium.io/en/stable/network/kubernetes/kubeproxy-free/
 kubeProxyReplacement: "true"
 
+externalIPs:
+  enabled: true
+
 # -- Configure L2 announcements
 l2announcements:
   enabled: true
