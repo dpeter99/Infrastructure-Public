@@ -1,4 +1,5 @@
 image:
+  image: ghcr.io/gethomepage/homepage
   tag: v0.9.5
 
 config:
