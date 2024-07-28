@@ -4,7 +4,7 @@ metadata:
   name: monitoring-prometheus
   namespace: flux-system
 spec:
-  path: ./apps/infrastructure/core/cert-manager/app
+  path: ./apps/infrastructure/monitoring/prometheus/app
   prune: true
   sourceRef:
     kind: GitRepository
