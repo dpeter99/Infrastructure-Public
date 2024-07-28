@@ -1,0 +1,31 @@
+fullnameOverride: infra-prometheus
+namespaceOverride: monitoring
+
+prometheus:
+  ingress:
+    enabled: true
+    pathType: Prefix
+    ingressClassName: "nginx"
+    hosts:
+      - "prometheus.intranet"
+
+
+grafana:
+  enabled: false
+  forceDeployDashboards: false
+  sidecar:
+    dashboards:
+      annotations:
+        grafana_folder: Prometheus
+
+defaultRules:
+  create: false
+
+alertmanager:
+  enabled: false
+
+kubernetesServiceMonitors:
+  enabled: false
+
+kubeProxy:
+  enabled: false

@@ -7,3 +7,4 @@ talos_os/talsecret.yaml
 talos_os/_temp/
 
 talos_os/clusterconfig/
+/apps/infrastructure/monitoring/prometheus/app/_test/

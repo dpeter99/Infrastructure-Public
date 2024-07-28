@@ -1,0 +1,49 @@
+---
+apiVersion: helm.toolkit.fluxcd.io/v2beta2
+kind: HelmRelease
+metadata:
+  name: monitoring-prometheus
+  namespace: monitoring
+spec:
+  interval: 15m
+  chart:
+    spec:
+      chart: kube-prometheus-stack
+      version: 61.4.0
+      sourceRef:
+        kind: HelmRepository
+        name: prometheus-community-charts
+        namespace: flux-system
+      interval: 15m
+  upgrade:
+    remediation:
+      remediateLastFailure: true
+      retries: 5
+      strategy: rollback
+  install:
+    createNamespace: true
+    remediation:
+      retries: 2
+  postRenderers:
+    - kustomize:
+        patches:
+          - target:
+              # Ignore these objects from Flux diff as they are mutated from chart hooks
+              kind: (ValidatingWebhookConfiguration|MutatingWebhookConfiguration)
+              name: kube-prometheus-stack-admission
+            patch: |
+              - op: add
+                path: /metadata/annotations/helm.toolkit.fluxcd.io~1driftDetection
+                value: disabled
+          - target:
+              # Ignore these objects from Flux diff as they are mutated at apply time but not
+              # at dry-run time
+              kind: PrometheusRule
+            patch: |
+              - op: add
+                path: /metadata/annotations/helm.toolkit.fluxcd.io~1driftDetection
+                value: disabled
+  valuesFrom:
+    - kind: ConfigMap
+      name: prom-stack-values
+

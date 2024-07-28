@@ -11,6 +11,14 @@ nodes:
       - device: /dev/sda
         partitions:
           - mountpoint: /var/mnt/ext-store
+  - hostname: APER-NODE-02
+    controlPlane: true
+    ipAddress: 10.1.2.2
+    installDisk: /dev/nvme0n1
+    machineDisks:
+      - device: /dev/sda
+        partitions:
+          - mountpoint: /var/mnt/ext-store
 patches:
   - "@patches/cni.yaml"
   - "@patches/dhcp.yaml"
