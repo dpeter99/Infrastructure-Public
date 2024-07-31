@@ -23,15 +23,15 @@ spec:
 
     grafana.ini:
       server:
-        domain: monitoring.example.com
-        root_url: "%(protocol)s://%(domain)s/grafana"
-        serve_from_sub_path: true
+        domain: &host grafana.intranet
+      # root_url: "%(protocol)s://%(domain)s/"
+      # serve_from_sub_path: true
 
     ingress:
       enabled: true
       ingressClassName: nginx
       hosts:
-        - &host grafana.intranet
+        - *host
       tls:
         - hosts:
             - *host
