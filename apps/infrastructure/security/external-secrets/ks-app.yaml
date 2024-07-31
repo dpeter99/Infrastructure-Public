@@ -4,7 +4,7 @@ metadata:
   name: infra-core-external-secrets
   namespace: flux-system
 spec:
-  path: ./apps/infrastructure/core/external-secrets/app
+  path: ./apps/infrastructure/security/external-secrets/app
   prune: true
   sourceRef:
     kind: GitRepository

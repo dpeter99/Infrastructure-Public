@@ -5,4 +5,3 @@ resources:
   - cilium/ks-config.yaml
   - longhorn/ks-app.yaml
   - nginx-proxy/ks-app.yaml
-  - external-secrets/ks-app.yaml
