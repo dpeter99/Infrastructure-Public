@@ -20,6 +20,11 @@ spec:
       interval: 5m
   values:
     replicas: 1
+    grafana.ini:
+      server:
+        domain: monitoring.example.com
+        root_url: "%(protocol)s://%(domain)s/grafana"
+        serve_from_sub_path: true
 
     ingress:
       enabled: true
