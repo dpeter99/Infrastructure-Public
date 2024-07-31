@@ -5,3 +5,4 @@ resources:
   - flux-system/helm-chart-repos/jetstack.yaml
   - flux-system/helm-chart-repos/jameswynn.yaml
   - flux-system/helm-chart-repos/prometheus-community-charts.yaml
+  - flux-system/helm-chart-repos/grafana-charts.yaml

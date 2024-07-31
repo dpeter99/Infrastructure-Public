@@ -3,3 +3,4 @@ kind: Kustomization
 resources:
   - monitoring-ns.yaml
   - prometheus/ks-app.yaml
+  - grafana/ks-app.yaml

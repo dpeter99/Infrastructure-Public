@@ -1,0 +1,66 @@
+---
+apiVersion: helm.toolkit.fluxcd.io/v2
+kind: HelmRelease
+metadata:
+  name: grafana
+  namespace: monitoring
+  labels:
+    component.skylab.fi/part-of: standard-helm-release
+spec:
+  interval: 5m
+  chart:
+    spec:
+      # renovate: registryUrl=https://grafana.github.io/helm-charts
+      chart: grafana
+      version: 8.3.7
+      sourceRef:
+        kind: HelmRepository
+        name: grafana-charts
+        namespace: flux-system
+      interval: 5m
+  values:
+    replicas: 1
+
+    ingress:
+      enabled: true
+      ingressClassName: nginx
+      hosts:
+        - &host grafana.intranet
+      tls:
+        - hosts:
+            - *host
+
+    resources:
+      limits:
+        memory: 219M
+      requests:
+        cpu: 23m
+        memory: 127M
+
+    serviceMonitor:
+      enabled: true
+
+    datasources:
+      enabled: true
+      labelValue: ""
+      searchNamespace: ALL
+      datasources.yaml:
+        apiVersion: 1
+        datasources:
+          - access: proxy
+            isDefault: true
+            name: Prometheus
+            type: prometheus
+            url: http://prom-prometheus:9090/
+
+    sidecar:
+      dashboards:
+        enabled: true
+        labelValue: ""
+        label: grafana_dashboard
+        folderAnnotation: grafana_folder
+        searchNamespace: ALL
+        provider:
+          disableDelete: true
+          foldersFromFilesStructure: true
+      logLevel: INFO

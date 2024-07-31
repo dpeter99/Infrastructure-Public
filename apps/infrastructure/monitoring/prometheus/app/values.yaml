@@ -8,11 +8,20 @@ prometheus:
     ingressClassName: "nginx"
     hosts:
       - "prometheus.intranet"
+  prometheusSpec:
+    storageSpec:
+      volumeClaimTemplate:
+        spec:
+          accessModes:
+            - ReadWriteOnce
+          resources:
+            requests:
+              storage: 10Gi
 
 
 grafana:
   enabled: false
-  forceDeployDashboards: false
+  forceDeployDashboards: true
   sidecar:
     dashboards:
       annotations:
