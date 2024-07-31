@@ -27,6 +27,19 @@ spec:
       # root_url: "%(protocol)s://%(domain)s/"
       # serve_from_sub_path: true
 
+    dashboardProviders:
+      dashboardproviders.yaml:
+        apiVersion: 1
+        providers:
+          - name: default
+            disableDeletion: false
+            editable: true
+            folder: ""
+            options:
+              path: /var/lib/grafana/dashboards/default
+            orgId: 1
+            type: file
+
     ingress:
       enabled: true
       ingressClassName: nginx
@@ -45,3 +58,15 @@ spec:
 
     serviceMonitor:
       enabled: true
+
+    sidecar:
+      dashboards:
+        enabled: true
+        labelValue: ""
+        label: grafana_dashboard
+        folderAnnotation: grafana_folder
+        searchNamespace: ALL
+        provider:
+          disableDelete: true
+          foldersFromFilesStructure: true
+      logLevel: INFO
