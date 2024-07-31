@@ -20,6 +20,7 @@ spec:
       interval: 5m
   values:
     replicas: 1
+
     grafana.ini:
       server:
         domain: monitoring.example.com
@@ -47,7 +48,7 @@ spec:
 
     datasources:
       enabled: true
-      labelValue: ""  
+      labelValue: ""
       searchNamespace: ALL
       datasources.yaml:
         apiVersion: 1
@@ -57,6 +58,23 @@ spec:
             name: Prometheus
             type: prometheus
             url: http://prom-prometheus:9090/
+          - name: InfluxDB
+            type: influxdb
+            access: proxy
+            url: "https://influx.${MAIN_DOMAIN_2}"
+            secureJsonData:
+              token: ${SECRET_GRAFANA_OUTSIDE_INFLUX_TOKEN}
+            jsonData:
+              version: Flux
+              organization: default
+              defaultBucket: home_assistant
+              tlsSkipVerify: true
+          - name: Alertmanager
+            type: alertmanager
+            access: proxy
+            url: http://alertmanager.monitoring.svc.cluster.local:9093
+            jsonData:
+              implementation: prometheus
         deleteDatasources:
           - name: Loki
             orgId: 1
