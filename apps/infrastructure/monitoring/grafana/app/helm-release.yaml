@@ -27,6 +27,9 @@ spec:
       # root_url: "%(protocol)s://%(domain)s/"
       # serve_from_sub_path: true
 
+    admin:
+      existingSecret: grafana-admin-secret
+
     dashboardProviders:
       dashboardproviders.yaml:
         apiVersion: 1
