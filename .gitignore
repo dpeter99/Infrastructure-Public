@@ -8,3 +8,5 @@ talos_os/_temp/
 
 talos_os/clusterconfig/
 /apps/infrastructure/monitoring/prometheus/app/_test/
+
+apps/infrastructure/security/onepassword-connect/app/onepassword-connect.secret.yaml
