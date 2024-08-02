@@ -1,10 +1,10 @@
 apiVersion: kustomize.toolkit.fluxcd.io/v1
 kind: Kustomization
 metadata:
-  name: infra-security-external-secrets-app
+  name: infra-security-external-secrets-stores
   namespace: flux-system
 spec:
-  path: ./apps/infrastructure/security/external-secrets/app
+  path: ./apps/infrastructure/security/external-secrets/stores
   prune: true
   sourceRef:
     kind: GitRepository
