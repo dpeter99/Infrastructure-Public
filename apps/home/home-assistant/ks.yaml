@@ -21,13 +21,3 @@ spec:
   interval: 30m
   retryInterval: 1m
   timeout: 5m
-  postBuild:
-    substitute:
-      APP: *app
-      APP_UID: "568"
-      APP_GID: "568"
-      HOSTNAME: hass.skylab.fi
-      VOLSYNC_CAPACITY: 10Gi
-      VOLSYNC_CLAIM: hass-config
-      VOLSYNC_STORAGECLASS: ceph-block
-      VOLSYNC_SNAPSHOTCLASS: csi-ceph-blockpool
