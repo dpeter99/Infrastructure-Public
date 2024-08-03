@@ -11,6 +11,14 @@ nodes:
       - device: /dev/sda
         partitions:
           - mountpoint: /var/mnt/ext-store
+    machineFiles: &machineFiles
+      - path: /etc/cri/conf.d/20-customization.part
+        op: create
+        permissions: 0
+        content: |-
+          [plugins."io.containerd.grpc.v1.cri"]
+            enable_unprivileged_ports = true
+
   - hostname: APER-NODE-02
     controlPlane: true
     ipAddress: 10.1.2.2
@@ -19,6 +27,8 @@ nodes:
       - device: /dev/sda
         partitions:
           - mountpoint: /var/mnt/ext-store
+    machineFiles: *machineFiles
+
 patches:
   - "@patches/cni.yaml"
   - "@patches/dhcp.yaml"
