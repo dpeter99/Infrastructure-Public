@@ -17,6 +17,6 @@ spec:
             pathType: Prefix
             backend:
               service:
-                name: home-assistant
+                name: {{ include "home-assistant.fullname" . }}
                 port:
                   name: "http"
