@@ -37,6 +37,11 @@ spec:
           volumeMounts:
             - name: ha-config
               mountPath: /config
+          securityContext:
+            runAsNonRoot: true
+            runAsUser: 568
+            runAsGroup: 568
+            seccompProfile: { type: RuntimeDefault }
       volumes:
         - name: ha-config
           persistentVolumeClaim:
