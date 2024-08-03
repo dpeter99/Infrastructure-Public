@@ -1,5 +1,5 @@
 apiVersion: apps/v1
-kind: Deployment
+kind: StatefulSet
 metadata:
   name: {{ include "home-assistant.fullname" . }}
   labels:
@@ -16,7 +16,6 @@ spec:
     spec:
       containers:
         - name: {{ .Chart.Name }}-core
-          #image: "ghcr.io/home-assistant/home-assistant:{{ .Chart.AppVersion }}"
           image: "ghcr.io/onedr0p/home-assistant:{{ .Chart.AppVersion }}"
           imagePullPolicy: IfNotPresent
           env:
