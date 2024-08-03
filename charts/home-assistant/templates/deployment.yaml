@@ -42,6 +42,15 @@ spec:
             runAsUser: 568
             runAsGroup: 568
             seccompProfile: { type: RuntimeDefault }
+        - name: code-server
+          image: "ghcr.io/coder/code-server:4.91.1"
+          args: [
+            "--auth", "none",
+            "--user-data-dir", "/config/.vscode",
+            "--extensions-dir", "/config/.vscode",
+            "--port", "12321",
+            "/config"
+          ]
       volumes:
         - name: ha-config
           persistentVolumeClaim:
