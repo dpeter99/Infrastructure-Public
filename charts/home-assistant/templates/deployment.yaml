@@ -44,6 +44,9 @@ spec:
             "--port", "12321",
             "/config"
           ]
+          volumeMounts:
+            - name: ha-config
+              mountPath: /config
           ports:
               - name: http
                 containerPort: 12321
