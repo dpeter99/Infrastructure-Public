@@ -16,11 +16,14 @@ spec:
     spec:
       containers:
         - name: {{ .Chart.Name }}-core
-          image: "ghcr.io/home-assistant/home-assistant:{{ .Chart.AppVersion }}"
+          #image: "ghcr.io/home-assistant/home-assistant:{{ .Chart.AppVersion }}"
+          image: "ghcr.io/onedr0p/home-assistant:{{ .Chart.AppVersion }}"
           imagePullPolicy: IfNotPresent
           env:
             - name: HASS_HTTP_TRUSTED_PROXY_1
-              value: 10.244.0.0/16
+              value: "10.244.0.0/16"
+            - name: TZ
+              value: "Europe/Budapest"
           ports:
             - name: http
               containerPort: 8123
