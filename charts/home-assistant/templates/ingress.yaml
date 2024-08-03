@@ -6,6 +6,7 @@ metadata:
   labels:
     {{- include "home-assistant.labels" . | nindent 4 }}
 spec:
+  ingressClassName: nginx
   rules:
     - host: "{{ .Values.hostName }}"
       http:
