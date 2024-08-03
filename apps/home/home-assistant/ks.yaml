@@ -5,8 +5,6 @@ kind: Kustomization
 metadata:
   name: &app home-assistant
   namespace: flux-system
-  labels:
-    component.skylab.fi/part-of: definitions
 spec:
   targetNamespace: home
   commonMetadata:
