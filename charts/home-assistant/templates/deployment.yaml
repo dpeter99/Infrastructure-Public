@@ -18,6 +18,9 @@ spec:
         - name: {{ .Chart.Name }}-core
           image: "ghcr.io/home-assistant/home-assistant:{{ .Chart.AppVersion }}"
           imagePullPolicy: IfNotPresent
+          env:
+            - name: HASS_HTTP_TRUSTED_PROXY_1
+              value: 10.244.0.0/16
           ports:
             - name: http
               containerPort: 8123
