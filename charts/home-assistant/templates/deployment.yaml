@@ -27,13 +27,6 @@ spec:
             - name: http
               containerPort: 8123
               protocol: TCP
-          readinessProbe:
-            tcpSocket:
-              port: 8123
-            initialDelaySeconds: 0
-            failureThreshold: 3
-            timeoutSeconds: 1
-            periodSeconds: 10
           volumeMounts:
             - name: ha-config
               mountPath: /config
@@ -51,6 +44,10 @@ spec:
             "--port", "12321",
             "/config"
           ]
+          ports:
+              - name: http
+                containerPort: 12321
+                protocol: TCP
       volumes:
         - name: ha-config
           persistentVolumeClaim:
