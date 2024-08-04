@@ -7,3 +7,4 @@ nameOverride: ""
 fullnameOverride: ""
 
 hostName: "office.intranet"
+codeServerHostName: "code.office.intranet"

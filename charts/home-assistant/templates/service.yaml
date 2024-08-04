@@ -13,3 +13,22 @@ spec:
       name: http
   selector:
     {{- include "home-assistant.selectorLabels" . | nindent 4 }}
+
+
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: {{ include "home-assistant.fullname" . }}-code-server
+  labels:
+    {{- include "home-assistant.labels" . | nindent 4 }}
+spec:
+  type: ClusterIP
+  ports:
+    - port: 80
+      targetPort: http-code
+      protocol: TCP
+      name: http
+  selector:
+    {{- include "home-assistant.selectorLabels" . | nindent 4 }}
+

@@ -50,7 +50,7 @@ spec:
             - name: ha-config
               mountPath: /config
           ports:
-              - name: http
+              - name: http-code
                 containerPort: 12321
                 protocol: TCP
           securityContext: *securityContext

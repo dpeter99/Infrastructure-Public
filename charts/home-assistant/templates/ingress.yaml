@@ -18,3 +18,25 @@ spec:
                 name: {{ include "home-assistant.fullname" . }}
                 port:
                   name: "http"
+
+---
+---
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: home-assistant-code-server
+  labels:
+    {{- include "home-assistant.labels" . | nindent 4 }}
+spec:
+  ingressClassName: nginx
+  rules:
+    - host: "{{ .Values.codeServerHostName }}"
+      http:
+        paths:
+          - path: /
+            pathType: Prefix
+            backend:
+              service:
+                name: {{ include "home-assistant.fullname" . }}-code-server
+                port:
+                  name: "http"
