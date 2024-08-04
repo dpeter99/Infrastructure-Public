@@ -9,3 +9,4 @@ resources:
   - flux-system/helm-chart-repos/external-secrets.yaml
   - flux-system/helm-chart-repos/bjw-s.yaml
   - flux-system/helm-chart-repos/stakater-charts.yaml
+  - flux-system/helm-chart-repos/node-feature-discovery-charts.yaml
