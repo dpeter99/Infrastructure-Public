@@ -56,6 +56,12 @@ spec:
     ingress:
       enabled: true
       ingressClassName: nginx
+      annotations:
+        gethomepage.dev/enabled: "true"
+        gethomepage.dev/name: "Garafana"
+        gethomepage.dev/description: "Grafana dashboard"
+        gethomepage.dev/group: "Infrastructure"
+        gethomepage.dev/icon: "homepage.png"
       hosts:
         - *host
       tls:

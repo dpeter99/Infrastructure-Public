@@ -5,6 +5,10 @@ metadata:
   name: home-assistant
   labels:
     {{- include "home-assistant.labels" . | nindent 4 }}
+  annotations:
+    {{- with .Values.deployment.annotations }}
+    {{- toYaml . | indent 4 }}
+    {{- end }}
 spec:
   ingressClassName: nginx
   rules:
@@ -19,7 +23,6 @@ spec:
                 port:
                   name: "http"
 
----
 ---
 apiVersion: networking.k8s.io/v1
 kind: Ingress
