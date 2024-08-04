@@ -28,7 +28,7 @@ spec:
       onepassword-connect:
         strategy: RollingUpdate
         annotations:
-          reloader.stakater.com/auto: "true"
+          reloader.stakater.com/auto: "true" # See /apps/infrastructure/core/reloader/readme.md
         containers:
           api:
             image:
