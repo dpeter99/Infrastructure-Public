@@ -10,3 +10,4 @@ resources:
   - flux-system/helm-chart-repos/bjw-s.yaml
   - flux-system/helm-chart-repos/stakater-charts.yaml
   - flux-system/helm-chart-repos/node-feature-discovery-charts.yaml
+  - flux-system/helm-chart-repos/metrics-server-charts.yaml
