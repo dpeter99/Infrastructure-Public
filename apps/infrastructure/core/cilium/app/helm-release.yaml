@@ -27,29 +27,3 @@ spec:
   valuesFrom:
     - kind: ConfigMap
       name: cilium-values
-#  values:
-#    hubble:
-#      serviceMonitor:
-#        enabled: true
-#
-#      dashboards:
-#        enabled: true
-#        label: grafana_dashboard
-#        namespace: monitoring
-#        labelValue: "1"
-#        annotations: { }
-#
-#      relay:
-#        prometheus:
-#          serviceMonitor:
-#            enabled: true
-#
-#      prometheus:
-#        serviceMonitor:
-#          enabled: true
-#
-#      operator:
-#        prometheus:
-#          serviceMonitor:
-#            enabled: true
-
