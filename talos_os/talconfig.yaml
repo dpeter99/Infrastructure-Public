@@ -1,7 +1,11 @@
 ---
 clusterName: aperture_cluster
-endpoint: https://10.1.2.1:6443
+endpoint: https://10.69.1.20:6443
 allowSchedulingOnControlPlanes: true
+additionalApiServerCertSans:
+  - "127.0.0.1"
+  - "10.1.2.254"
+
 nodes:
   - hostname: APER-NODE-01
     controlPlane: true
@@ -11,6 +15,10 @@ nodes:
       - device: /dev/sda
         partitions:
           - mountpoint: /var/mnt/ext-store
+    networkInterfaces: &networkInterfaces
+      - interface: eth0
+        vip:
+          ip: 10.1.2.254
     machineFiles: &machineFiles
       - path: /etc/cri/conf.d/20-customization.part
         op: create
@@ -28,6 +36,7 @@ nodes:
         partitions:
           - mountpoint: /var/mnt/ext-store
     machineFiles: *machineFiles
+    networkInterfaces: *networkInterfaces
 
 patches:
   - "@patches/cni.yaml"
