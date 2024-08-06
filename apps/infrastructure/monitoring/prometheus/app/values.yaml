@@ -77,10 +77,10 @@ kubeStateMetrics:
   enabled: true
 kube-state-metrics:
   fullnameOverride: kube-state-metrics
-  metricLabelsAllowlist:
-    - pods=[*]
-    - deployments=[*]
-    - persistentvolumeclaims=[*]
+#  metricLabelsAllowlist:
+#    - pods=[*]
+#    - deployments=[*]
+#    - persistentvolumeclaims=[*]
   prometheus:
     monitor:
       enabled: true
