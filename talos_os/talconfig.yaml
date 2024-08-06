@@ -1,8 +1,11 @@
 ---
 clusterName: aperture_cluster
-endpoint: https://10.69.1.20:6443
+endpoint: https://10.1.2.254:6443
 allowSchedulingOnControlPlanes: true
 additionalApiServerCertSans:
+  - "127.0.0.1"
+  - "10.1.2.254"
+additionalMachineCertSans:
   - "127.0.0.1"
   - "10.1.2.254"
 
