@@ -55,3 +55,5 @@ controlPlane:
         officialExtensions:
           - siderolabs/iscsi-tools
           - siderolabs/util-linux-tools
+  patches:
+    - "@patches/controller-fixes.yaml"

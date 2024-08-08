@@ -25,3 +25,11 @@ spec:
       retries: 3
   uninstall:
     keepHistory: false
+  values:
+    ingress:
+      annotations:
+        gethomepage.dev/enabled: "true"
+        gethomepage.dev/name: "Home Assistant"
+        gethomepage.dev/description: "Home Assistant dashboard"
+        gethomepage.dev/group: "Home"
+        gethomepage.dev/icon: "homepage.png"

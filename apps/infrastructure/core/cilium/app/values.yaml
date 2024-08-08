@@ -1,4 +1,5 @@
 ---
+# yaml-language-server: $schema=https://github.com/cilium/cilium/blob/v1.16.0/install/kubernetes/cilium/values.schema.json
 operator:
   replicas: 1
   prometheus:

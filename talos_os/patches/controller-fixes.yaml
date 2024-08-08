@@ -1,0 +1,9 @@
+---
+# This patch is used to fix metrics-server reading cluster information
+cluster:
+  controllerManager:
+    extraArgs:
+      bind-address: 0.0.0.0
+  scheduler:
+    extraArgs:
+      bind-address: 0.0.0.0

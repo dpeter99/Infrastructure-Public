@@ -11,9 +11,15 @@ codeServerHostName: "code.office.intranet"
 
 ingress:
   enabled: true
-  annotations:
-    gethomepage.dev/enabled: "true"
-    gethomepage.dev/name: "Home Assistant"
-    gethomepage.dev/description: "Home Assistant dashboard"
-    gethomepage.dev/group: "Home"
-    gethomepage.dev/icon: "homepage.png"
+  annotations: {}
+  pathType: Prefix
+  hosts:
+    - "home-assistant.office.intranet"
+
+codeServer:
+  ingress:
+    enabled: true
+    annotations: {}
+    pathType: Prefix
+    hosts:
+      - "code.office.intranet"
