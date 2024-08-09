@@ -45,6 +45,7 @@ patches:
   - "@patches/cni.yaml"
   - "@patches/dhcp.yaml"
   - "@patches/kubelet-certificates.yaml"
+  - "@patches/zigbee-udev-rule.yaml"
 #  - "@patches/longhorn-volume.yaml"
 controlPlane:
   schematic:

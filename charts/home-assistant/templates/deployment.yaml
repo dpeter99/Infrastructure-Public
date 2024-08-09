@@ -40,7 +40,7 @@ spec:
               mountPath: /config
             {{ if .Values.usb.enabled }}
             - name: usb
-              mountPath: &usbdevice {{ .Values.usb.path }}
+              mountPath: &usbdevice {{ .Values.usb.mountPath | default .Values.usb.path }}
             {{ end }}
           securityContext: &securityContext
             runAsNonRoot: true

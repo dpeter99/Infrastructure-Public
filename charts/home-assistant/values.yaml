@@ -14,6 +14,7 @@ nodeSelector: {}
 usb:
   enabled: false
   path: "/dev/ttyUSB0"
+  mountPath: "/dev/ttyUSB0"
 
 ingress:
   enabled: true
