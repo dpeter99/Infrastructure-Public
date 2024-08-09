@@ -28,6 +28,7 @@ spec:
   values:
     usb:
       enabled: true
+      path: "/dev/serial/by-id/usb-ITEAD_SONOFF_Zigbee_3.0_USB_Dongle_Plus_V2_20231031101717-if00"
     nodeSelector:
       feature.node.kubernetes.io/usb-02_1a86_55d4.present: 'true'
     ingress:

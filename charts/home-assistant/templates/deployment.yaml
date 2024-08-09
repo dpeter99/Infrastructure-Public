@@ -40,7 +40,7 @@ spec:
               mountPath: /config
             {{ if .Values.usb.enabled }}
             - name: usb
-              mountPath: /dev/ttyACM0
+              mountPath: &usbdevice {{ .Values.usb.path }}
             {{ end }}
           securityContext: &securityContext
             runAsNonRoot: true
@@ -71,5 +71,5 @@ spec:
         {{ if .Values.usb.enabled }}
         - name: usb
           hostPath:
-            path: "/dev/ttyUSB0"
+            path: *usbdevice
         {{ end }}
