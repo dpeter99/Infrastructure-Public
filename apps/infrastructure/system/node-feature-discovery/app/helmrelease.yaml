@@ -26,6 +26,8 @@ spec:
       strategy: rollback
       retries: 3
   values:
+    topologyUpdater:
+      updateInterval: 20s
     worker:
       config:
         core:
