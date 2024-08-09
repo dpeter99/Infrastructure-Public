@@ -27,7 +27,7 @@ spec:
     keepHistory: false
   values:
     nodeSelector:
-      zigbee.feature.node.kubernetes.io/sonoff: "true"
+      feature.node.kubernetes.io/usb-02_1a86_55d4.present: 'true'
     ingress:
       annotations:
         gethomepage.dev/enabled: "true"
