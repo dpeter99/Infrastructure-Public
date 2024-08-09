@@ -16,6 +16,10 @@ spec:
       labels:
         {{- include "home-assistant.selectorLabels" . | nindent 8 }}
     spec:
+      {{- with .Values.nodeSelector }}
+      nodeSelector:
+      {{ toYaml . | indent 4 }}
+      {{- end }}
       securityContext:
         fsGroup: 568
       containers:

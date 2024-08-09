@@ -9,6 +9,8 @@ fullnameOverride: ""
 hostName: "office.intranet"
 codeServerHostName: "code.office.intranet"
 
+nodeSelector: {}
+
 ingress:
   enabled: true
   annotations: {}
