@@ -26,6 +26,8 @@ spec:
   uninstall:
     keepHistory: false
   values:
+    usb:
+      enabled: true
     nodeSelector:
       feature.node.kubernetes.io/usb-02_1a86_55d4.present: 'true'
     ingress:

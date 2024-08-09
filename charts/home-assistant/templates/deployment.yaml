@@ -38,6 +38,10 @@ spec:
           volumeMounts:
             - name: ha-config
               mountPath: /config
+            {{ if .Values.usb.enabled }}
+            - name: usb
+              mountPath: /dev/ttyACM0
+            {{ end }}
           securityContext: &securityContext
             runAsNonRoot: true
             runAsUser: 568
@@ -64,3 +68,8 @@ spec:
         - name: ha-config
           persistentVolumeClaim:
             claimName: home-assistant-config
+        {{ if .Values.usb.enabled }}
+        - name: usb
+          hostPath:
+            path: "/dev/ttyUSB0"
+        {{ end }}

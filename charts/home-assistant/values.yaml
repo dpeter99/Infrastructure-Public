@@ -11,6 +11,9 @@ codeServerHostName: "code.office.intranet"
 
 nodeSelector: {}
 
+usb:
+  enabled: false
+
 ingress:
   enabled: true
   annotations: {}
