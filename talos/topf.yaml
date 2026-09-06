@@ -1,0 +1,14 @@
+kubernetesVersion: 1.35.5
+talosVersion: 1.14.0
+
+clusterEndpoint: https://10.1.0.100:6443
+clusterName: aper-cluster
+
+secretsPath: secrets.sops.yaml
+
+nodes:
+  - host: node1
+    ip: 10.1.0.100
+    role: control-plane
+    data:
+      installDiskSerial: "BE2607161A1100129459"

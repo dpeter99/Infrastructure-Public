@@ -1,0 +1,20 @@
+[env]
+SOPS_CONFIG = "{{config_root}}/config/.sops.yaml"
+SOPS_AGE_KEY_FILE = "{{config_root}}/age.key"
+
+[tools]
+python = "3.14.6"          # required:template
+uv = "0.11.21"             # required:template
+pipx = "1.14.0"            # required:template
+"pipx:makejinja" = "2.8.2" # required:template
+
+gum="2.0.0"
+
+age = "latest"
+just = "1.58.0"
+sops = "3.13.1"
+
+"github:postfinance/topf" = "v0.6.0"
+talosctl = "1.13.4"
+
+kubectl = "1.36.2"
