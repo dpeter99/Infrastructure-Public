@@ -9,7 +9,7 @@ mod age_setup
 
 [doc('Bootstrap the Talos cluster')]
 [group('bootstrap')]
-init: talos-secret talos-apply talos-talosconfig talos-kubeconfig
+init: talos-secret talos-apply talos-talosconfig talos-kubeconfig apps-helm
 
 [private]
 [script]
@@ -37,4 +37,12 @@ talos-talosconfig:
 [working-directory('../talos')]
 talos-kubeconfig:
     just log info "Fetching kubeconfig" stage "{{ recipe_name() }}"
-    topf kubeconfig --validity 8760h > "{{ justfile_dir() }}/kubeconfig"    
+    topf kubeconfig --validity 8760h > "{{ justfile_dir() }}/kubeconfig"
+
+
+[private]
+apps-helm:
+    just log info "Syncing helmfile" stage "{{ recipe_name() }}"
+    if ! helmfile --file "{{ source_directory() }}/helmfile/apps.yaml" sync --hide-notes; then
+        just log fatal "Failed to sync helmfile"
+    fi        

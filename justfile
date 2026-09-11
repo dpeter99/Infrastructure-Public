@@ -4,10 +4,12 @@ set script-interpreter := ['bash', '-euo', 'pipefail']
 set default-list
 set default-script
 
-[group('bootstrap')]
-mod bootstrap
+#[group('bootstrap')]
+#mod bootstrap
 
-mod talos
+mod template "cluster"
+
+#mod talos
 
 [private]
 log lvl msg *args:

@@ -1,9 +1,9 @@
 [makejinja]
-inputs = ["./template"]
-output = "./"
-exclude_patterns = ["template/scripts/*","*.partial.yaml.j2"]
+inputs = ["./cluster"]
+output = "./.out"
+exclude_patterns = ["*.partial.yaml.j2"]
 data = ["./cluster.toml"]
-import_paths = ["./template/scripts"]
+import_paths = ["./scripts"]
 loaders = ["plugin:Plugin"]
 jinja_suffix = ".j2"
 copy_metadata = true

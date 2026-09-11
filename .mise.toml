@@ -10,11 +10,17 @@ pipx = "1.14.0"            # required:template
 
 gum="2.0.0"
 
-age = "latest"
 just = "1.58.0"
+
+age = "latest"
 sops = "3.13.1"
 
 "github:postfinance/topf" = "v0.6.0"
 talosctl = "1.13.4"
 
 kubectl = "1.36.2"
+
+helm = "4.2.4"
+helmfile = "1.7.4"
+
+cilium-cli = "0.20.0"
