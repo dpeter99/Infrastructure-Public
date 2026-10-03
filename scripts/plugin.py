@@ -3,6 +3,7 @@ from typing import Any
 
 import makejinja
 import re
+import yaml
 
 # Return the stripped contents of file_path, rejecting a missing or empty file
 def _read_stripped(file_path: str) -> str:
@@ -37,8 +38,13 @@ class Plugin(makejinja.plugin.Plugin):
     def __init__(self, data: dict[str, Any]):
         self._data = data
 
+    # Return the cluster.toml config as a YAML block, for embedding under a parent key
+    def cluster_data(self, indent: int = 2) -> str:
+        dumped = yaml.safe_dump(dict(self._data), default_flow_style=False, sort_keys=False).rstrip()
+        return dumped.replace("\n", "\n" + " " * indent)
 
     def functions(self) -> makejinja.plugin.Functions:
         return [
-            age_key
+            age_key,
+            self.cluster_data,
         ]

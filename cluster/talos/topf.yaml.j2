@@ -6,6 +6,9 @@ clusterName: aper-cluster
 
 secretsPath: secrets.sops.yaml
 
+data:
+  #{ cluster_data() }#
+
 nodes:
   - host: node1
     ip: 10.90.2.101

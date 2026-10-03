@@ -14,4 +14,4 @@ bondMode: active-backup
 addresses:
   - address: "{{ .Node.IP }}/16"
 routes:
-  - gateway: "10.90.0.1"
+  - gateway: "{{ .Data.network.gateway }}"

@@ -1,2 +1,13 @@
 [network]
+gateway = "10.90.0.1"
 node_cidr = "asd"
+
+[kubernetes]
+
+[kubernetes.api]
+
+# Virtual IP for the Kubernetes API server. kubectl, flux, and every other
+# client connect here on port 6443. Must be an unused IP inside
+# network.node_cidr — kube-vip floats it across controller nodes.
+# REQUIRED.
+addr = "10.90.2.100"
