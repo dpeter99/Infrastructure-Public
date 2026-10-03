@@ -1,6 +1,9 @@
 [env]
 SOPS_CONFIG = "{{config_root}}/config/.sops.yaml"
 SOPS_AGE_KEY_FILE = "{{config_root}}/age.key"
+KUBECONFIG = "{{config_root}}/kubeconfig"
+TALOSCONFIG = "{{config_root}}/talosconfig"
+
 
 [tools]
 python = "3.14.6"          # required:template
@@ -9,6 +12,7 @@ pipx = "1.14.0"            # required:template
 "pipx:makejinja" = "2.8.2" # required:template
 
 gum="2.0.0"
+yq = "4.53.6"
 
 just = "1.58.0"
 

@@ -9,5 +9,46 @@ spec:
     name: cilium
   interval: 1h
   values:
+    # The stable bond name is defined in talos/all/20-network-links.yaml.tpl
+    devices: bond0+
+
     dashboards:
       enabled: true
+    ipam:
+      mode: kubernetes
+    kubeProxyReplacement: true
+    kubeProxyReplacementHealthzBindAddr: 0.0.0.0:10256
+
+    k8sServiceHost: 127.0.0.1
+    k8sServicePort: 7445
+
+    operator:
+      dashboards:
+        enabled: true
+      prometheus:
+        enabled: true
+        serviceMonitor:
+          enabled: true
+      replicas: 1
+      rollOutPods: true
+
+    securityContext:
+      capabilities:
+        ciliumAgent:
+          - CHOWN
+          - KILL
+          - NET_ADMIN
+          - NET_RAW
+          - IPC_LOCK
+          - SYS_ADMIN
+          - SYS_RESOURCE
+          - PERFMON
+          - BPF
+          - DAC_OVERRIDE
+          - FOWNER
+          - SETGID
+          - SETUID
+        cleanCiliumState:
+          - NET_ADMIN
+          - SYS_ADMIN
+          - SYS_RESOURCE

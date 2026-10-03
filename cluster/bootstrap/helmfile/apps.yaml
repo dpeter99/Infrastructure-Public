@@ -14,19 +14,11 @@ helmDefaults:
   wait: true
   waitForJobs: true
 
-#bases:
-#  - default.yaml
+bases:
+  - default.yaml
 
 releases:
   - name: cilium
     namespace: kube-system
-    chart: "oci://quay.io/cilium/charts/cilium"
-    version: "1.20.1"
-    values:
-      - 
-
-  - name: coredns
-    namespace: kube-system
     inherit:
       - template: default
-    needs: ["kube-system/cilium"]

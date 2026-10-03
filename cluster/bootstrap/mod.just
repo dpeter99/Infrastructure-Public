@@ -9,7 +9,12 @@ mod age_setup
 
 [doc('Bootstrap the Talos cluster')]
 [group('bootstrap')]
-init: talos-secret talos-apply talos-talosconfig talos-kubeconfig apps-helm
+talos: talos-secret talos-apply talos-talosconfig talos-kubeconfig
+
+[doc('Bootstrap the core apps')]
+[group('bootstrap')]
+apps: apps-crds apps-helm
+
 
 [private]
 [script]
@@ -29,7 +34,7 @@ talos-apply:
 [working-directory('../talos')]
 talos-talosconfig:
     just log info "Generating talosconfig" stage "{{ recipe_name() }}"
-    topf talosconfig > talosconfig    
+    topf talosconfig > "{{ justfile_dir() }}/talosconfig"
 
 # topf issues short-lived admin certs by default; 8760h keeps the
 # kubeconfig usable long-term.
@@ -41,8 +46,16 @@ talos-kubeconfig:
 
 
 [private]
+apps-crds:
+    just log info "Applying CRDs" stage "{{ recipe_name() }}"
+    if ! helmfile --file "{{ source_directory() }}/helmfile/crds.yaml" template --quiet | yq eval-all --exit-status 'select(.kind == "CustomResourceDefinition")' | kubectl apply --server-side --force-conflicts --filename -; then
+        just log fatal "Failed to apply crds"
+    fi
+
+
+[private]
 apps-helm:
     just log info "Syncing helmfile" stage "{{ recipe_name() }}"
     if ! helmfile --file "{{ source_directory() }}/helmfile/apps.yaml" sync --hide-notes; then
         just log fatal "Failed to sync helmfile"
-    fi        
+    fi    

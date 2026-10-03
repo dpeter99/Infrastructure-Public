@@ -7,9 +7,16 @@ set default-script
 #[group('bootstrap')]
 #mod bootstrap
 
-mod template "cluster"
+template: render
 
-#mod talos
+[private]
+render:
+    rm -r ./.out
+    PYTHONDONTWRITEBYTECODE=1 uv run --locked --no-dev makejinja &> /dev/null
+
+mod? talos ".out/talos"
+mod? bootstrap ".out/bootstrap"
+
 
 [private]
 log lvl msg *args:
