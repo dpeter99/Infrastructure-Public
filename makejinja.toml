@@ -8,6 +8,7 @@ loaders = ["plugin:Plugin"]
 jinja_suffix = ".j2"
 copy_metadata = true
 force = true
+quiet = true
 undefined = "strict"
 
 [makejinja.delimiter]

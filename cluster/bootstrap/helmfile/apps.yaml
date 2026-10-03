@@ -22,3 +22,9 @@ releases:
     namespace: kube-system
     inherit:
       - template: default
+
+  - name: coredns
+    namespace: kube-system
+    inherit:
+      - template: default
+    needs: ["kube-system/cilium"]

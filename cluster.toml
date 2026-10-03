@@ -1,8 +1,13 @@
 [network]
 gateway = "10.90.0.1"
-node_cidr = "asd"
+node_cidr = "10.90.2.0/24"
+
+
 
 [kubernetes]
+
+pod_cidr = "10.94.0.0/16"
+svc_cidr = "10.95.0.0/16"
 
 [kubernetes.api]
 
