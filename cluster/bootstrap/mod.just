@@ -13,7 +13,7 @@ talos: talos-secret talos-apply talos-talosconfig talos-kubeconfig
 
 [doc('Bootstrap the core apps')]
 [group('bootstrap')]
-apps: apps-crds apps-helm
+apps: apps-secrets apps-crds apps-helm 
 
 
 [private]
@@ -46,6 +46,23 @@ talos-kubeconfig:
 
 
 [private]
+apps-secrets:
+    just log info "Applying secrets for apps" stage "{{ recipe_name() }}"
+    for secret in \
+        "{{ source_directory() }}/deploy-key.yaml" \
+        "{{ source_directory() }}/sops-age.yaml"
+    do
+        if cat "$secret" \
+                | kubectl --namespace flux-system apply --server-side --filename - &>/dev/null; then
+            just log info "Secret applied" resource "$secret"
+        else
+            just log fatal "Failed to apply secret" resource "$secret"
+        fi
+    done
+
+
+
+[private]
 apps-crds:
     just log info "Applying CRDs" stage "{{ recipe_name() }}"
     if ! helmfile --file "{{ source_directory() }}/helmfile/crds.yaml" template --quiet | yq eval-all --exit-status 'select(.kind == "CustomResourceDefinition")' | kubectl apply --server-side --force-conflicts --filename -; then
@@ -58,4 +75,6 @@ apps-helm:
     just log info "Syncing helmfile" stage "{{ recipe_name() }}"
     if ! helmfile --file "{{ source_directory() }}/helmfile/apps.yaml" sync --hide-notes; then
         just log fatal "Failed to sync helmfile"
-    fi    
+    fi
+
+

@@ -19,10 +19,10 @@ bases:
   - default.yaml
 
 releases:
-#  - name: envoy-gateway
-#    namespace: network
-#    inherit:
-#      - template: default
+  - name: envoy-gateway
+    namespace: network
+    inherit:
+      - template: default
 
   - name: prometheus-operator-crds
     namespace: observability
