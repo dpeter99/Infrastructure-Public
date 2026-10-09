@@ -17,7 +17,7 @@ spec:
       create: true
     service:
       name: kube-dns
-#      clusterIP: "#{ kubernetes.coredns_addr }#"
+      clusterIP: "10.95.0.10"
     replicaCount: 1
     priorityClassName: system-cluster-critical
     servers:
