@@ -11,9 +11,11 @@ mod age_setup
 [group('bootstrap')]
 talos: talos-secret talos-apply talos-talosconfig talos-kubeconfig
 
+# Run `just push` first: once flux-instance is up it reconciles the OCI
+# artifact and takes over the helmfile-installed releases.
 [doc('Bootstrap the core apps')]
 [group('bootstrap')]
-apps: apps-secrets apps-crds apps-helm 
+apps: apps-namespaces apps-secrets apps-crds apps-helm
 
 
 [private]
@@ -45,12 +47,33 @@ talos-kubeconfig:
     topf kubeconfig --validity 8760h > "{{ justfile_dir() }}/kubeconfig"
 
 
+
+# Namespaces are owned by Flux (kubernetes/apps/<ns>/namespace.yaml); they
+# are pre-created here so the bootstrap secrets and helm releases have a home.
+[private]
+apps-namespaces:
+    just log info "Applying namespaces for apps" stage "{{ recipe_name() }}"
+    for ns in \
+        "kube-system" \
+        "flux-system"
+    do
+        if kubectl create namespace "$ns" --dry-run=client -o yaml \
+                | kubectl apply --server-side --filename - &>/dev/null; then
+            just log info "Namespace applied" namespace "$ns"
+        else
+            just log fatal "Failed to apply namespace" namespace "$ns"
+        fi
+    done
+
+
+# sops-age is the only place the age private key ever lands outside this
+# machine; Flux decrypts *.sops.yaml in-cluster with it.
 [private]
 apps-secrets:
     just log info "Applying secrets for apps" stage "{{ recipe_name() }}"
     for secret in \
-        "{{ source_directory() }}/deploy-key.yaml" \
-        "{{ source_directory() }}/sops-age.yaml"
+        "{{ source_directory() }}/sops-age.yaml" \
+        "{{ source_directory() }}/registry-credentials.yaml"
     do
         if cat "$secret" \
                 | kubectl --namespace flux-system apply --server-side --filename - &>/dev/null; then
