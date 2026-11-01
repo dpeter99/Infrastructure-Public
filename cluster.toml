@@ -21,6 +21,7 @@ router_asn = "64512"
 
 pod_cidr = "10.94.0.0/16"
 svc_cidr = "10.95.0.0/16"
+lb_cidr =  "10.96.0.0/16"
 
 [kubernetes.api]
 
@@ -32,4 +33,4 @@ addr = "10.90.2.100"
 
 [gateways]
 
-internal = "10.90.2.201"
+internal = "10.96.0.100"
