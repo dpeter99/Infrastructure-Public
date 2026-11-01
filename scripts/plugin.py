@@ -1,9 +1,16 @@
+from collections.abc import Mapping
 from pathlib import Path
 from typing import Any
 
+import base64
+import json
 import makejinja
 import re
+import subprocess
 import yaml
+
+# Secret cluster values (domain, ...); sops-encrypted, keys visible, committed.
+SECRETS_FILE = 'cluster.secrets.sops.yaml'
 
 # Return the stripped contents of file_path, rejecting a missing or empty file
 def _read_stripped(file_path: str) -> str:
@@ -33,9 +40,30 @@ def age_key(key_type: str, file_path: str = 'age.key') -> str:
     else:
         raise ValueError("Invalid key type. Use 'public' or 'private'.")
 
-# Return the Flux deploy key from deploy.key
-def deploy_key(file_path: str = 'deploy.key') -> str:
-    return _read_stripped(file_path)
+
+# Resolve a 1Password secret reference (op://vault/item/field) with the op CLI
+def op_read(reference: str) -> str:
+    if not reference.startswith('op://'):
+        raise ValueError(f"Not a 1Password secret reference: {reference!r}")
+    result = subprocess.run(['op', 'read', '--no-newline', reference], capture_output=True, text=True)
+    if result.returncode != 0:
+        raise RuntimeError(f"op read {reference} failed: {result.stderr.strip()}")
+    if not result.stdout:
+        raise ValueError(f"op read {reference} returned nothing")
+    return result.stdout
+
+
+# Return a .dockerconfigjson document granting pull access to the registry
+# that hosts oci_url (e.g. oci://ghcr.io/org/repo -> ghcr.io), with the
+# username and token read from the given 1Password references.
+def docker_config_json(oci_url: str, username_ref: str, token_ref: str) -> str:
+    host = oci_url.removeprefix('oci://').split('/', 1)[0]
+    if not host:
+        raise ValueError(f"Could not determine registry host from {oci_url!r}")
+    username = op_read(username_ref)
+    token = op_read(token_ref)
+    auth = base64.b64encode(f"{username}:{token}".encode()).decode()
+    return json.dumps({'auths': {host: {'username': username, 'password': token, 'auth': auth}}})
 
 
 # Return the Flux webhook token from flux-webhook-token.txt
@@ -43,30 +71,32 @@ def webhook_token(file_path: str = 'flux-webhook-token.txt') -> str:
     return _read_stripped(file_path)
 
 
-# SSH host keys as published by each provider. Must cover every host in
-# KNOWN_SSH_HOSTS in validate.py; any other host requires the user to set
-# repository.known_hosts in cluster.toml.
-KNOWN_HOSTS = {
-    'github.com': (
-        'github.com ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIOMqqnkVzrm0SdG6UOoqKLsabgH5C9okWi0dh2l9GKJl\n'
-        'github.com ecdsa-sha2-nistp256 AAAAE2VjZHNhLXNoYTItbmlzdHAyNTYAAAAIbmlzdHAyNTYAAABBBEmKSENjQEezOmxkZMy7opKgwFB9nkt5YRrYMjNuG5N87uRgg6CLrbo5wAdT/y6v0mKV0U2w0WZ2YB/++Tpockg=\n'
-        'github.com ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABgQCj7ndNxQowgcQnjshcLrqPEiiphnt+VTTvDP6mHBL9j1aNUkY4Ue1gvwnGLVlOhGeYrnZaMgRK6+PKCUXaDbC7qtbW8gIkhL7aGCsOr/C56SJMy/BCZfxd1nWzAOxSDPgVsmerOBYfNqltV9/hWCqBywINIR+5dIg6JTJ72pcEpEjcYgXkE2YEFXV1JHnsKgbLWNlhScqb2UmyRkQyytRLtL+38TGxkxCflmO+5Z8CSSNY7GidjMIZ7Q4zMjA2n1nGrlTDkzwDCsw+wqFPGQA179cnfGWOWRVruj16z6XyvxvjJwbz0wQZ75XK5tKSb7FNyeIEs4TT4jk+S4dhPeAUC5y+bDYirYgM4GC7uEnztnZyaVWQ7B381AK4Qdrwt51ZqExKbQpTUNn+EjqoTwvqNj4kqx5QUCI0ThS/YkOxJCXmPUWZbhjpCg56i+2aB6CmK2JGhn57K5mj0MNdBXA4/WnwH6XoPWJzK5Nyu2zB3nAZp+S5hpQs+p1vN1/wsjk='
-    ),
-    'gitlab.com': (
-        'gitlab.com ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIAfuCHKVTjquxvt6CM6tdG4SLp1Btn/nOeHHE5UOzRdf\n'
-        'gitlab.com ecdsa-sha2-nistp256 AAAAE2VjZHNhLXNoYTItbmlzdHAyNTYAAAAIbmlzdHAyNTYAAABBBFSMqzJeV9rUzU4kWitGjeR4PWSa29SPqJ1fVkhtj3Hw9xjLVXVYrU9QlYWrOLXBpQ6KWjbjTDTdDkoohFzgbEY=\n'
-        'gitlab.com ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQCsj2bNKTBSpIYDEGk9KxsGh3mySTRgMtXL583qmBpzeQ+jqCMRgBqB98u3z++J1sKlXHWfM9dyhSevkMwSbhoR8XIq/U0tCNyokEi/ueaBMCvbcTHhO7FcwzY92WK4Yt0aGROY5qX2UKSeOvuP4D6TPqKF1onrSzH9bx9XUf2lEdWT/ia1NEKjunUqu1xOB/StKDHMoX4/OKyIzuS0q/T1zOATthvasJFoPrAjkohTyaDUz2LN5JoH839hViyEG82yB+MjcFV5MU3N1l1QL3cVUCh93xSaua1N85qivl+siMkPGbO5xR/En4iEY6K2XPASUEMaieWVNTRCtJ4S8H+9'
-    ),
-    'codeberg.org': (
-        'codeberg.org ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIIVIC02vnjFyL+I4RHfvIGNtOgJMe769VTF1VR4EB3ZB\n'
-        'codeberg.org ecdsa-sha2-nistp256 AAAAE2VjZHNhLXNoYTItbmlzdHAyNTYAAAAIbmlzdHAyNTYAAABBBL2pDxWr18SoiDJCGZ5LmxPygTlPu+cCKSkpqkvCyQzl5xmIMeKNdfdBpfbCGDPoZQghePzFZkKJNR/v9Win3Sc=\n'
-        'codeberg.org ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQC8hZi7K1/2E2uBX8gwPRJAHvRAob+3Sn+y2hxiEhN0buv1igjYFTgFO2qQD8vLfU/HT/P/rqvEeTvaDfY1y/vcvQ8+YuUYyTwE2UaVU5aJv89y6PEZBYycaJCPdGIfZlLMmjilh/Sk8IWSEK6dQr+g686lu5cSWrFW60ixWpHpEVB26eRWin3lKYWSQGMwwKv4LwmW3ouqqs4Z4vsqRFqXJ/eCi3yhpT+nOjljXvZKiYTpYajqUC48IHAxTWugrKe1vXWOPxVXXMQEPsaIRc2hpK+v1LmfB7GnEGvF1UAKnEZbUuiD9PBEeD5a1MZQIzcoPWCrTxipEpuXQ5Tni4mN'
-    ),
-}
+# Run sops with args (and optional stdin), returning stdout
+def _sops(args: list[str], stdin: str | None = None) -> str:
+    result = subprocess.run(['sops', *args], input=stdin, capture_output=True, text=True)
+    if result.returncode != 0:
+        raise RuntimeError(f"sops {' '.join(args)} failed: {result.stderr.strip()}")
+    return result.stdout
+
+
+# Decrypt the root secrets file into a mapping (needs SOPS_AGE_KEY_FILE / age.key)
+def load_secrets(file_path: str = SECRETS_FILE) -> dict[str, Any]:
+    if not Path(file_path).exists():
+        raise FileNotFoundError(f"{file_path} not found, run: just init")
+    data = json.loads(_sops(['--decrypt', '--output-type', 'json', file_path]))
+    if not isinstance(data, dict) or not data:
+        raise ValueError(f"{file_path} must be a non-empty mapping")
+    return data
+
 
 class Plugin(makejinja.plugin.Plugin):
-    def __init__(self, data: dict[str, Any]):
+    def __init__(self, *, data: Mapping[str, Any], **_: Any):
         self._data = data
+        self._secrets = load_secrets()
+
+    # Extra template global; `secrets` is therefore a reserved top-level name in cluster.toml.
+    def data(self) -> makejinja.plugin.Data:
+        return {'secrets': self._secrets}
 
     # Return the cluster.toml config as a YAML block, for embedding under a parent key
     def cluster_data(self, indent: int = 2) -> str:
@@ -76,7 +106,7 @@ class Plugin(makejinja.plugin.Plugin):
     def functions(self) -> makejinja.plugin.Functions:
         return [
             age_key,
-            deploy_key,
+            docker_config_json,
             webhook_token,
             self.cluster_data,
         ]

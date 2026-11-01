@@ -5,8 +5,6 @@ set script-interpreter := ['bash', '-euo', 'pipefail']
 set default-list
 set default-script
 
-mod age_setup
-
 [doc('Bootstrap the Talos cluster')]
 [group('bootstrap')]
 talos: talos-secret talos-apply talos-talosconfig talos-kubeconfig
@@ -73,7 +71,8 @@ apps-secrets:
     just log info "Applying secrets for apps" stage "{{ recipe_name() }}"
     for secret in \
         "{{ source_directory() }}/sops-age.yaml" \
-        "{{ source_directory() }}/registry-credentials.yaml"
+        "{{ source_directory() }}/registry-credentials.yaml" \
+        "{{ source_directory() }}/cluster-secrets.yaml"
     do
         if cat "$secret" \
                 | kubectl --namespace flux-system apply --server-side --filename - &>/dev/null; then

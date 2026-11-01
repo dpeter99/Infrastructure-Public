@@ -1,0 +1,9 @@
+---
+# Non-secret values from cluster.toml available to every app via ${VAR} substitution.
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: cluster-settings
+  namespace: flux-system
+data:
+  TEST: "asd"

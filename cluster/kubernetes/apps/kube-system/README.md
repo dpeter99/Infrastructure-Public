@@ -1,0 +1,1 @@
+The core system apps that are needed for a functioning cluster

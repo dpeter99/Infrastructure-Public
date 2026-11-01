@@ -9,6 +9,24 @@ spec:
     name: cilium
   interval: 1h
   values:
+    autoDirectNodeRoutes: true
+    bpf:
+      masquerade: true
+      # Ref: https://github.com/siderolabs/talos/issues/10002
+      hostLegacyRouting: true
+    
+
+    bgpControlPlane:
+      enabled: true
+
+    cni:
+      # Required for pairing with Multus CNI
+      exclusive: false
+    cgroup:
+      autoMount:
+        enabled: false
+      hostRoot: /sys/fs/cgroup
+
     # The stable bond name is defined in talos/all/20-network-links.yaml.tpl
     devices: bond0+
 
@@ -17,8 +35,6 @@ spec:
     endpointRoutes:
       enabled: true
     envoy:
-      enabled: false
-    gatewayAPI:
       enabled: false
     hubble:
       enabled: true
@@ -29,12 +45,21 @@ spec:
 
     ipam:
       mode: kubernetes
-    kubeProxyReplacement: true
-    kubeProxyReplacementHealthzBindAddr: 0.0.0.0:10256
 
+    ipv4NativeRoutingCIDR: "#{ kubernetes.pod_cidr }#"  
     k8sServiceHost: 127.0.0.1
     k8sServicePort: 7445
+    kubeProxyReplacement: true
+    kubeProxyReplacementHealthzBindAddr: 0.0.0.0:10256
+    l2announcements:
+      enabled: true
 
+    loadBalancer:
+      algorithm: maglev
+      mode: "dsr"
+      serviceTopology: true # spegel-registry relies on trafficDistribution: PreferSameNode
+    localRedirectPolicies:
+      enabled: true
     operator:
       dashboards:
         enabled: true
@@ -44,7 +69,13 @@ spec:
           enabled: true
       replicas: 1
       rollOutPods: true
-
+    prometheus:
+      enabled: true
+      serviceMonitor:
+        enabled: true
+        trustCRDsExist: true
+    rollOutCiliumPods: true
+    routingMode: native
     securityContext:
       capabilities:
         ciliumAgent:
@@ -65,3 +96,5 @@ spec:
           - NET_ADMIN
           - SYS_ADMIN
           - SYS_RESOURCE
+    socketLB:
+      enabled: true

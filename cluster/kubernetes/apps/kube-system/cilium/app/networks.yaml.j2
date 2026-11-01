@@ -1,5 +1,5 @@
 ---
-apiVersion: cilium.io/v2alpha1
+apiVersion: cilium.io/v2
 kind: CiliumLoadBalancerIPPool
 metadata:
   name: pool
@@ -21,3 +21,52 @@ spec:
   nodeSelector:
     matchLabels:
       kubernetes.io/os: linux
+
+---
+apiVersion: cilium.io/v2
+kind: CiliumBGPClusterConfig
+metadata:
+  name: bgp-cluster-config
+spec:
+  nodeSelector:
+    matchLabels:
+      kubernetes.io/os: linux
+  bgpInstances:
+    - name: instance-#{ network.bgp.cluster_asn }#
+      localASN: #{ network.bgp.cluster_asn }#
+      peers:
+        - name: peer-#{ network.bgp.router_asn }#-v4
+          peerASN: #{ network.bgp.router_asn }#
+          peerAddress: #{ network.gateway }#
+          peerConfigRef:
+            name: bgp-peer-config-v4
+
+---
+apiVersion: cilium.io/v2
+kind: CiliumBGPPeerConfig
+metadata:
+  name: bgp-peer-config-v4
+spec:
+  families:
+    - afi: ipv4
+      safi: unicast
+      advertisements:
+        matchLabels:
+          advertise: bgp
+
+---
+apiVersion: cilium.io/v2
+kind: CiliumBGPAdvertisement
+metadata:
+  name: bgp-advertisement-config
+  labels:
+    advertise: bgp
+spec:
+  advertisements:
+    - advertisementType: Service
+      service:
+        addresses:
+          - LoadBalancerIP
+      selector:
+        matchExpressions:
+          - { key: somekey, operator: NotIn, values: ["never-used-value"] }

@@ -4,3 +4,6 @@ config/.sops.yaml
 kubeconfig
 talosconfig
 /.out
+/deploy.key
+/deploy.key.pub
+/flux-webhook-token.txt

@@ -1,0 +1,1 @@
+The k8s resources that get deployed to the cluster

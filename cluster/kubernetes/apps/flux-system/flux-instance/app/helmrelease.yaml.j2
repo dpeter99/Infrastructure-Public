@@ -19,12 +19,26 @@ spec:
         - kustomize-controller
         - helm-controller
         - notification-controller
+      # Flux reconciles the OCI artifact produced by `just push`, which is the
+      # rendered kubernetes/ tree. Paths below are relative to that tree.
+      # Always track `latest` so the rendered manifests never depend on which
+      # tag was pushed; the git revision is recorded in the artifact metadata.
       sync:
-        kind: GitRepository
-        url: "#{ repository.url }#"
-        pullSecret: deploy-key
-        ref: "refs/heads/#{ repository.branch }#"
-        path: kubernetes/flux/cluster
+        kind: OCIRepository
+        url: "#{ artifact.url }#"
+        ref: latest
+        path: ./flux/cluster
+        pullSecret: registry-credentials
       commonMetadata:
         labels:
           app.kubernetes.io/name: flux
+      kustomize:
+        patches:
+          - # Controller-level SOPS decryption
+            patch: |
+              - op: add
+                path: /spec/template/spec/containers/0/args/-
+                value: --sops-age-secret=sops-age
+            target:
+              kind: Deployment
+              name: kustomize-controller

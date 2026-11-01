@@ -1,5 +1,9 @@
 ---
 creation_rules:
+  # Root secret values file: every value encrypted, keys stay visible.
+  - path_regex: cluster\.secrets\.sops\.ya?ml$
+    mac_only_encrypted: true
+    age: "#{ age_key('public') }#"
   - path_regex: talos/.*\.sops\.ya?ml
     mac_only_encrypted: true
     age: "#{ age_key('public') }#"

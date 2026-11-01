@@ -1,12 +1,21 @@
-[repository]
-url = "ssh://git@github.com:dpeter99/Infrastructure-Public.git"
-branch = "main"
+[artifact]
+# OCI repository that `just push` publishes the rendered kubernetes manifests
+# to, tagged with the git sha and `latest` (which Flux tracks).
+url = "oci://ghcr.io/dpeter99/aper-cluster"
+# 1Password secret references (op://<vault>/<item>/<field>) for the registry
+# username and token. `just login` and the in-cluster pull secret both read
+# them with `op read`; the values themselves never land in this repo.
+op_username = "op://Private/Aper Cluser GHCR/username"
+op_token = "op://Private/Aper Cluser GHCR/credential"
 
 [network]
 gateway = "10.90.0.1"
 node_cidr = "10.90.2.0/24"
 
+[network.bgp]
+cluster_asn = "64513"
 
+router_asn = "64512"
 
 [kubernetes]
 

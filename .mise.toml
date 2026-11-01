@@ -26,5 +26,6 @@ kubectl = "1.36.2"
 
 helm = "4.2.4"
 helmfile = "1.7.4"
+flux2 = "2.9.6"
 
 cilium-cli = "0.20.0"
